@@ -64,6 +64,8 @@ function completeMatrix() {
 	console.log(global.serversInformations);
 	for (var i = 0; i < global.ROWS; i++) {
 		for (var j = 0; j < global.SLOTS; j++) {
+
+		}
 	}
 }
 
