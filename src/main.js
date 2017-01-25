@@ -2,7 +2,9 @@ const _ = require("lodash");
 const LineByLineReader = require('linebyline');
 const UNAVAILBLE = "UNAVAILBLE";
 
+
 function main() {
+	global.serversInformations = [];
 	readInputFile();
 }
 
@@ -21,9 +23,19 @@ function readInputFile() {
 		} 
 		// SERVERS
 		else {
-
+			global.serversInformations.push({
+				number: lineCount - (1 + global.SLOTS_UNAVAILABLE),
+				slots: line.split(" ")[0],
+				capacity: line.split(" ")[1]
+			});
 		}
 	});
+	lr.on('end', function(){
+		completeMatrix();
+		console.log(global.dataCenterMatrix)
+
+	});
+	
 }
 
 function initMainVariables(line) {
@@ -36,9 +48,9 @@ function initMainVariables(line) {
 }
 
 function initMatrix() {
-	var matrix = new Array(global.SLOTS);
-	for (var i = 0; i < global.SLOTS; i++) {
-		matrix[i] = new Array(global.ROWS);
+	var matrix = new Array(global.ROWS);
+	for (var i = 0; i < global.ROWS; i++) {
+		matrix[i] = new Array(global.SLOTS);
 	}
 	return matrix;
 }
@@ -48,6 +60,12 @@ function setUnavailableSlots(line) {
 	global.dataCenterMatrix[slotUnavailableCoordinates[0]][slotUnavailableCoordinates[1]] = UNAVAILBLE;
 }
 
+function completeMatrix() {
+	console.log(global.serversInformations);
+	for (var i = 0; i < global.ROWS; i++) {
+		for (var j = 0; j < global.SLOTS; j++) {
+	}
+}
 
 
 main();

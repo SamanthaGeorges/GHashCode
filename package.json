@@ -1,0 +1,23 @@
+{
+  "name": "datacenter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamanthaGeorges/GHashCode.git"
+  },
+  "author": "SGE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SamanthaGeorges/GHashCode/issues"
+  },
+  "homepage": "https://github.com/SamanthaGeorges/GHashCode#readme",
+  "dependencies": {
+    "linebyline": "1.3.0",
+    "lodash": "4.13.0"
+  }
+}
