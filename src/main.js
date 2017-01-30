@@ -24,7 +24,7 @@ function readInputFile() {
 		// SERVERS
 		else {
 			global.serversInformations.push({
-				number: lineCount - (1 + global.SLOTS_UNAVAILABLE),
+				number: lineCount - (1 + global.SLOTS_UNAVAILABLE) -1,
 				slots: line.split(" ")[0],
 				capacity: line.split(" ")[1]
 			});
@@ -32,7 +32,7 @@ function readInputFile() {
 	});
 	lr.on('end', function(){
 		completeMatrix();
-		console.log(global.dataCenterMatrix)
+		//console.log(global.dataCenterMatrix)
 
 	});
 	
@@ -61,12 +61,54 @@ function setUnavailableSlots(line) {
 }
 
 function completeMatrix() {
-	console.log(global.serversInformations);
-	for (var i = 0; i < global.ROWS; i++) {
-		for (var j = 0; j < global.SLOTS; j++) {
+		var rowIndex = 0;
+		var columnIndex = 0;
+		var serverColumnPosition = 0;
 
+		var numberOfAvailableSlots = 0;
+
+	_.forEach(global.serversInformations, function(server){
+		console.log(server)
+		
+		var numberOfAvailableSlots = 0;
+		while(rowIndex < ROWS) {
+			//Slot is available
+			if(_.isNil(global.dataCenterMatrix[rowIndex][columnIndex])){
+				numberOfAvailableSlots ++;
+
+				if(numberOfAvailableSlots == server.slots) {
+					for(var j = serverColumnPosition; j <= columnIndex; j++){
+						global.dataCenterMatrix[rowIndex][j] = "Server"+ server.number;
+					}
+					numberOfAvailableSlots = 0;
+					return;
+				} else if(columnIndex < SLOTS) {
+					columnIndex++;
+				} else if (rowIndex < ROWS){
+					rowIndex ++;
+					numberOfAvailableSlots = 0;
+					columnIndex = 0;
+				} else {
+					return;
+				}
+			}
+			//Slot is not available
+			else {
+				serverColumnPosition ++;
+				numberOfAvailableSlots = 0;
+				if(columnIndex < SLOTS) {
+					columnIndex++;
+				} else if (rowIndex < ROWS){
+					rowIndex ++;
+					numberOfAvailableSlots = 0;
+					columnIndex = 0;
+				} else {
+					return;
+				}
+			}
 		}
-	}
+	});
+	console.log(global.dataCenterMatrix)
 }
 
 
