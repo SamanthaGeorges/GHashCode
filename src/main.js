@@ -2,6 +2,7 @@ const _ = require("lodash");
 const LineByLineReader = require('linebyline');
 const UNAVAILBLE = "UNAVAILBLE";
 const FREE = "FREE";
+const fs = require('fs');
 
 
 function main() {
@@ -34,6 +35,7 @@ function readInputFile() {
 	lr.on('end', function(){
 		completeMatrix();
 		var totalCapacity = calculScore(global.dataCenterMatrix);
+		produceOutputFile();
 		console.log(totalCapacity);
 	});
 	
@@ -134,5 +136,53 @@ function calculScore(matrix) {
 	return score;
 }
 
+function produceOutputFile() {
+	var actualServerNumber = null;
+	var server = {};
+	var file = fs.createWriteStream('output.txt');
+	var poolNumber = [0, 0];
+	_.forEach(global.serversInformations, function(server){
+		for(var i = 0; i < ROWS; i++) {
+			for(var j = 0; j < SLOTS; j++) {
+				if(global.dataCenterMatrix[i][j] !== UNAVAILBLE) {
+
+					if(actualServerNumber === null || actualServerNumber != server.number){
+						var index = _.findIndex(global.dataCenterMatrix[i], function(val){
+							return val == server.number
+						});
+						console.log(poolNumber)
+						if(index !== -1) {
+							file.write(i + " " + index + " " + poolNumber[i]);
+							file.write("\r\n");
+							poolNumber[i] ++;
+							actualServerNumber = server.number;
+						}
+						
+					}
+				}
+			}
+
+		}
+	});
+
+
+	// for(var i = 0;i < ROWS; i++) {
+	// 	var poolNumber = 0;
+	// 	for(var j = 0; j < SLOTS; j++) {
+	// 		if(global.dataCenterMatrix[i][j] !== UNAVAILBLE) {
+	// 			var server = _.find(global.serversInformations, {'number':global.dataCenterMatrix[i][j]});
+	// 			if(actualServerNumber === null || actualServerNumber != server.number){
+	// 				console.log(i)
+	// 				file.write(i + " " + j + " " + poolNumber);
+	// 				file.write("\r\n");
+	// 				poolNumber ++;
+	// 				actualServerNumber = server.number;
+	// 			}
+	// 		}
+			
+	// 	}
+	// 	console.log("//////////////////////")
+	// }
+}
 
 main();
